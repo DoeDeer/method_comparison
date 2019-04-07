@@ -3,6 +3,8 @@ Module defines class, that contains single task data
 """
 import numpy as np
 
+from .resolve_methods import brute_force
+
 
 class Data:
     """
@@ -32,3 +34,7 @@ class Data:
             self.matrix = matrix
             for shape in self.matrix.shape[0]:
                 self.matrix[shape][shape] = 0
+
+    def solve(self, method='brute_force'):
+        solve_func = {'brute_force': brute_force}[method]
+        self.result = solve_func(self.matrix, self.task_type)
