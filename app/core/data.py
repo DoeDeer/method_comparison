@@ -21,18 +21,18 @@ class Data:
             tmp = []
             file = open(matrix, 'r')
             for line in file:
-                tmp.append(line.split(','))
+                tmp.append(line.split(';'))
             file.close()
             self.matrix = np.array(tmp)
             assert len(self.matrix.shape) == 2 and self.matrix.shape[0] == self.matrix.shape[1], "invalid matrix"
-            for shape in self.matrix.shape[0]:
+            for shape in range(self.matrix.shape[0]):
                 self.matrix[shape][shape] = 0
         else:
             # uses matrix variable as object with numpy matrix
             assert isinstance(matrix, np.ndarray), "'matrix' variable must be a numpy.array instance"
             assert len(matrix.shape) == 2 and matrix.shape[0] == matrix.shape[1], "invalid matrix"
             self.matrix = matrix
-            for shape in self.matrix.shape[0]:
+            for shape in range(self.matrix.shape[0]):
                 self.matrix[shape][shape] = 0
 
     def solve(self, method='brute_force'):
