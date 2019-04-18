@@ -97,7 +97,6 @@ class AppView(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.task = Data(matrix, task_type=task_type)
                 self.first_city_spin_box.setMaximum(len(self.task.matrix))
 
-
     def button_title_set_file(self):
         self.input_button.setText('Choose file')
 
