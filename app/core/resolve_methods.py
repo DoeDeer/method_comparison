@@ -4,7 +4,7 @@ Methods for solving TSP
 from itertools import permutations
 
 
-def brute_force(matrix, task_type='max', first_city=None):
+def brute_force(matrix, task_type='min', first_city=None):
     res_func = {'max': max, 'min': min}[task_type]
     res = {'max': -1, 'min': 99999999999}[task_type]
     if first_city:
@@ -20,7 +20,7 @@ def brute_force(matrix, task_type='max', first_city=None):
     return res
 
 
-def bellman_func(i: int, v: tuple, matrix, first_city: int=None):
+def bellman_func(i: int, v: tuple, matrix, first_city: int = None):
     if len(v) == 1:
         if first_city:
             return matrix[i][v[0]] + matrix[v[0]][first_city]

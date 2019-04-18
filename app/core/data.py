@@ -13,7 +13,7 @@ class Data:
     Class, that contains task matrix, task type and task result after solving
     """
 
-    def __init__(self, matrix, task_type='max', from_file=False):
+    def __init__(self, matrix, task_type='min', from_file=False):
         assert isinstance(task_type, str), "'task_type' variable must be a string"
         assert task_type in ('min', 'max'), "'task_type' variable must take 'min' or 'max' value"
         self.task_type = task_type
@@ -38,8 +38,20 @@ class Data:
             for shape in range(self.matrix.shape[0]):
                 self.matrix[shape][shape] = 0
 
-    def solve(self, method='brute_force'):
+    def solve(self, method='brute_force', first_city=None):
         solve_func = {'brute_force': brute_force, 'dynamic': bellman_func}[method]
+        if method == 'dynamic':
+            cities = tuple(range(len(self.matrix)))
+            first = 0
+            if first_city:
+                first = first_city - 1
+        else:
+            cities = ()
+            first = 0
+
+        args = {'brute_force': (self.matrix, self.task_type, first_city),
+                'dynamic': (first, cities[:first] + cities[first:], self.matrix, first_city)}
+
         start = time.clock()
-        self.result = solve_func(self.matrix, self.task_type)
+        self.result = solve_func(*args[method])
         self.resolve_time = time.clock() - start
