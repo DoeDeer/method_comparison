@@ -1,4 +1,5 @@
 import sys
+import os
 
 from PyQt5 import QtWidgets
 import numpy as np
@@ -49,6 +50,8 @@ class AppView(QtWidgets.QMainWindow, Ui_MainWindow):
         self.input_button.clicked.connect(self.set_matrix)
         self.radio_file.toggled.connect(self.button_title_set_file)
         self.radio_keyboard.toggled.connect(self.button_title_set_kb)
+        self.min_type_radio.toggled.connect(self.set_task_type)
+        self.max_type_radio.toggled.connect(self.set_task_type)
 
     def calc(self):
         if not self.task:
@@ -68,7 +71,7 @@ class AppView(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.brute_info_browser.append(tmp_string)
                 self.bellman_info_browser.append(tmp_string)
             first_city = self.first_city_spin_box.value()
-            first_city = first_city if first_city != 1 else None
+            first_city = first_city if first_city != 1 else 1
             self.task.solve(first_city=first_city)
             self.brute_info_browser.append('Solve results:\nAnswer: %s\nSolve time: % 1.6f seconds' %
                                            (self.task.result, self.task.resolve_time))
@@ -79,7 +82,7 @@ class AppView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def set_matrix(self):
         if self.radio_file.isChecked():
-            file_name = QtWidgets.QFileDialog.getOpenFileName(self, 'Choose file', '/home',
+            file_name = QtWidgets.QFileDialog.getOpenFileName(self, 'Choose file', os.path.expanduser('~'),
                                                               'Text file (*.txt);;All files (*)')[0]
             if file_name:
                 task_type = 'min'
@@ -102,6 +105,13 @@ class AppView(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def button_title_set_kb(self):
         self.input_button.setText('Enter matrix')
+
+    def set_task_type(self):
+        if self.task:
+            if self.min_type_radio.isChecked():
+                self.task.task_type = 'min'
+            else:
+                self.task.task_type = 'max'
 
 
 def main():

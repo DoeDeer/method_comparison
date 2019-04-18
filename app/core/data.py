@@ -40,6 +40,7 @@ class Data:
 
     def solve(self, method='brute_force', first_city=None):
         solve_func = {'brute_force': brute_force, 'dynamic': bellman_func}[method]
+
         if method == 'dynamic':
             cities = tuple(range(len(self.matrix)))
             first = 0
@@ -50,7 +51,7 @@ class Data:
             first = 0
 
         args = {'brute_force': (self.matrix, self.task_type, first_city),
-                'dynamic': (first, cities[:first] + cities[first:], self.matrix, first_city)}
+                'dynamic': (first, cities[:first] + cities[first + 1:], self.matrix)}
 
         start = time.clock()
         self.result = solve_func(*args[method])

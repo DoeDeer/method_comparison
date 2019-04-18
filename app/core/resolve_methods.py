@@ -20,12 +20,12 @@ def brute_force(matrix, task_type='min', first_city=None):
     return res
 
 
-def bellman_func(i: int, v: tuple, matrix, first_city: int = None):
+def bellman_func(i: int, v: tuple, matrix):
     if len(v) == 1:
-        if first_city:
-            return matrix[i][v[0]] + matrix[v[0]][first_city]
+        if v[0] == len(matrix) - 1:
+            return matrix[i][v[0]]
         else:
-            return matrix[i][v[0]] + matrix[v[0]][0]
+            return matrix[i][v[0]] + bellman_func(v[0], (len(matrix) - 1, ), matrix)
     else:
         equation = ((matrix[i][j] + bellman_func(j, v[0:num] + v[num + 1:], matrix))
                     for num, j in enumerate(v))
